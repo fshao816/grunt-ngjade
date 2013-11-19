@@ -13,6 +13,7 @@
   ],
   "author": "David Souther <davidsouther@gmail.com>",
   "license": "BSD-2-Clause",
+  "repository: "git@github.com:DavidSouther/ngJade.git",
   "devDependencies": {
     "grunt": "~0.4.1"
   },
