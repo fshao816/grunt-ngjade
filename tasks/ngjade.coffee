@@ -39,12 +39,14 @@ module.exports = (grunt)->
             grunt.fail.warn "Jade failed to compile #{filepath}."
 
     # Read a file from the filesystem and compile it.
-    prepare = (options) -> (filepath)->
+    prepare = (options, includes) -> (filepath)->
+        includes = includes || ''
         src = options.processContent(grunt.file.read(filepath))
+        result = includes + grunt.util.normalizelf options.separator + src
         filename = options.processName(filepath)
         options = grunt.util._.extend options, {filename}
 
-        compile src, options
+        compile result, options
 
     # Concat a list of strings and write to a file.
     write = (templates, file, options)->
@@ -64,13 +66,18 @@ module.exports = (grunt)->
                 separator: grunt.util.linefeed + grunt.util.linefeed
                 processContent: defaultProcessContent
                 processName: defaultProcessName
+                include: []
 
             grunt.verbose.writeflags options, 'Options'
+            filepaths = grunt.file.expand options.include
+            prefix = filepaths.map (filepath)->
+                grunt.file.read filepath
+            includes = prefix.join grunt.util.normalizelf options.separator
 
             @files.forEach (f)->
                 templates = f.src
                 .filter(fileExists)
-                .map(prepare(options))
+                .map(prepare(options, includes))
 
                 write templates, f, options
 

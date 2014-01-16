@@ -2,6 +2,10 @@ module.exports = (grunt)->
     grunt.initConfig
         ngjade:
             smoke:
+                options:
+                    include: [
+                        'test/mixins/*.jade'
+                    ]
                 files: [{
                     expand: false
                     src: ['test/fixtures/*.jade']
